@@ -39,3 +39,4 @@ npx drizzle-kit push
 ```bash
 curl -X POST http://localhost:3000/api/seed
 ```
+# solace-candidate-assignment
