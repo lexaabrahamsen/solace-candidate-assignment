@@ -1,5 +1,6 @@
 "use client";
 
+import { Button } from "@mui/material";
 import { useEffect, useState } from "react";
 
 type Advocate = {
@@ -13,6 +14,9 @@ type Advocate = {
   phoneNumber: string;
 };
 
+
+// use not default functionsimport React from "react";
+// create a table component
 export default function Home() {
   const [advocates, setAdvocates] = useState<Advocate[]>([]);
   const [filteredAdvocates, setFilteredAdvocates] = useState<Advocate[]>([]);
@@ -86,6 +90,7 @@ export default function Home() {
           aria-label="Search Advocates"
         />
         <button onClick={handleResetClick}>Reset Search</button>
+        <Button variant="contained" color="primary">MUI</Button>
       </div>
       <br />
       <br />
