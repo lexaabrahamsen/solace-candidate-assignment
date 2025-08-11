@@ -1,9 +1,19 @@
 "use client";
 
-import { Avatar, Box, Button, Chip, Stack, Typography } from "@mui/material";
+import {
+  Avatar,
+  Box,
+  Button,
+  Chip,
+  Stack,
+  styled,
+  Typography,
+} from "@mui/material";
 import { useEffect, useState } from "react";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { formatPhone } from "@/utils/formatPhone";
+import VerifiedOutlinedIcon from "@mui/icons-material/VerifiedOutlined";
+import VerifiedUserOutlinedIcon from "@mui/icons-material/VerifiedUserOutlined";
 
 type Advocate = {
   id?: string;
@@ -16,19 +26,44 @@ type Advocate = {
   phoneNumber: string;
 };
 
-const DegreeChip = ({ degree }: { degree: string }) => {
-  return (
-    <span
-      style={{
-        padding: "4px 8px",
-        backgroundColor: "#e0f7fa",
-        borderRadius: "4px",
-      }}
-    >
-      {degree}
-    </span>
-  );
-};
+export const InternalStyledDataGrid = styled(DataGrid)(({ theme }) => ({
+  backgroundColor: "white",
+  border: "1px solid #EEEBE8",
+  padding: "0.75rem",
+  borderRadius: ".75rem",
+  boxShadow:
+    "0px 1px 10px rgba(55, 55, 55, 0.06), 0px 1px 6px rgba(55, 55, 55, 0.04)",
+  "& .MuiDataGrid-columnSeparator": { display: "none" },
+  "& .MuiDataGrid-cell": {
+    borderBottom: "1px solid #EEEBE8",
+    outline: "none !important",
+    fontSize: theme.typography.body2.fontSize,
+  },
+  "& .MuiDataGrid-cell:focus, & .MuiDataGrid-cell:focus-within": {
+    outline: "none !important",
+  },
+  "& .MuiDataGrid-row.Mui-selected": {
+    backgroundColor: "inherit !important",
+  },
+  "& .MuiDataGrid-columnHeaders": {
+    borderBottom: "1px solid #EEEBE8",
+    fontWeight: 700,
+  },
+  "& .MuiDataGrid-row:hover": {
+    cursor: "pointer",
+  },
+  "& .MuiDataGrid-columnHeader:focus, & .MuiDataGrid-columnHeader:focus-within":
+    {
+      outline: "none",
+    },
+  "& .MuiDataGrid-columnHeader.MuiDataGrid-columnHeader--sorted": {
+    backgroundColor: "inherit", // Optional: remove green background when sorted
+  },
+  "& .MuiDataGrid-columnHeader": {
+    // Optional: remove background highlight on click
+    backgroundColor: "inherit",
+  },
+}));
 
 const avatarUrlFor = (first: string, last: string) =>
   `https://i.pravatar.cc/96?u=${encodeURIComponent(`${first}-${last}`)}`;
@@ -38,9 +73,9 @@ const initials = (first = "", last = "") =>
   `${first[0] ?? ""}${last[0] ?? ""}`.toUpperCase();
 
 const degreeStyles: Record<string, { bg: string; border: string }> = {
-  PHD: { bg: "#e3f2fd", border: "#90caf9" }, // blue-ish
-  MSW: { bg: "#fff3e0", border: "#ffb74d" }, // orange-ish
-  MD: { bg: "#e8f5e9", border: "#a5d6a7" }, // green-ish
+  PHD: { bg: "#E6FAF2", border: "#2B7A67" }, // green-ish
+  MSW: { bg: "#FFE9C2", border: "#8C6500" }, // yellow-ish
+  MD: { bg: "#DDF3FB", border: "#2F7D88" }, // blue-ish
   DEFAULT: { bg: "#eceff1", border: "#b0bec5" },
 };
 
@@ -66,7 +101,9 @@ const columns: GridColDef[] = [
           >
             {(firstName?.[0] ?? "") + (lastName?.[0] ?? "")}
           </Avatar>
-          <Typography noWrap>{firstName}</Typography>
+          <Typography variant="body2" noWrap>
+            {firstName}
+          </Typography>
         </Stack>
       );
     },
@@ -86,7 +123,7 @@ const columns: GridColDef[] = [
           label={v}
           size="small"
           variant="outlined"
-          sx={{ bgcolor: s.bg, borderColor: s.border }}
+          sx={{ bgcolor: s.bg, borderColor: s.border, color: s.border }}
         />
       );
     },
@@ -101,9 +138,36 @@ const columns: GridColDef[] = [
   {
     field: "yearsOfExperience",
     headerName: "Years",
-    width: 120,
+    width: 160,
     type: "number",
-    valueFormatter: ({ value }) => `${value} yrs`, // displays yrs suffix
+    sortComparator: (a, b) => Number(a) - Number(b), // keep numeric sort
+    renderCell: (params) => {
+      const years = Number(params.value ?? 0);
+      return (
+        <>
+          <Stack direction="column" alignItems="flex-end">
+            <Typography variant="body2">{years} yrs</Typography>
+            <Stack direction="row" spacing={0.75} alignItems="center">
+              {years >= 10 && (
+                <>
+                  <VerifiedUserOutlinedIcon
+                    sx={{ fontSize: 12, color: "#bc7d06" }}
+                  />
+                  <Typography
+                    variant="caption"
+                    gutterBottom
+                    noWrap
+                    sx={{ fontSize: 12, color: "#bc7d06" }}
+                  >
+                    Expert
+                  </Typography>
+                </>
+              )}
+            </Stack>
+          </Stack>
+        </>
+      );
+    },
   },
   {
     field: "phoneNumber",
@@ -190,7 +254,7 @@ export default function Home() {
         </Button>
       </div>
       <Box sx={{ mb: 8 }}>
-        <DataGrid
+        <InternalStyledDataGrid
           rows={filteredAdvocates}
           getRowId={(row) => row.id ?? row.phoneNumber}
           columns={columns}
