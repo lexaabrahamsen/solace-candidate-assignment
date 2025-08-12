@@ -25,6 +25,7 @@ import {
 } from "@mui/material";
 import {
   DataGrid,
+  DataGridProps,
   GridColDef,
   GridFilterModel,
   GridToolbarContainer,
@@ -62,7 +63,9 @@ const FRAME_SHADOW = "0px 2px 4px rgba(55, 55, 55, 0.08)";
 const FRAME_RADIUS = ".75rem";
 
 // ---------- Styled DataGrid ----------
-export const InternalStyledDataGrid = styled(DataGrid)(({ theme }) => ({
+const AdvocateGrid = (props: DataGridProps<Advocate>) => <DataGrid {...props} />;
+
+const InternalStyledDataGrid = styled(AdvocateGrid)(({ theme }) => ({
   backgroundColor: "white",
   border: "1px solid #EEEBE8",
   padding: "0.75rem",
@@ -100,7 +103,7 @@ export const InternalStyledDataGrid = styled(DataGrid)(({ theme }) => ({
 }));
 
 // Quick filter styled to establish the “frame” look
-export const StyledGridToolbarQuickFilter = styled(GridToolbarQuickFilter)(
+const StyledGridToolbarQuickFilter = styled(GridToolbarQuickFilter)(
   ({ theme }) => ({
     "& .MuiInputBase-root": {
       height: "2.25rem",
@@ -119,8 +122,7 @@ export const StyledGridToolbarQuickFilter = styled(GridToolbarQuickFilter)(
 );
 
 // ---------- Styled components ----------
-// Primary CTA (contained)
-export const StyledContainedButton = styled(Button)(({ theme }) => ({
+const StyledContainedButton = styled(Button)(({ theme }) => ({
   textTransform: "none",
   color: "#fff",
   backgroundColor: "#285e50",
@@ -146,8 +148,7 @@ export const StyledContainedButton = styled(Button)(({ theme }) => ({
   },
 }));
 
-// Secondary CTA (outlined)
-export const StyledOutlinedButton = styled(Button)(({ theme }) => ({
+const StyledOutlinedButton = styled(Button)(({ theme }) => ({
   textTransform: "none",
   color: "#285e50",
   backgroundColor: "#fff",
@@ -169,24 +170,6 @@ export const StyledOutlinedButton = styled(Button)(({ theme }) => ({
   },
 }));
 
-// Inputs inside drawer that should match the quick filter
-const StyledTextField = styled(TextField)(({ theme }) => ({
-  "& .MuiInputBase-root": {
-    height: "2.25rem",
-    borderRadius: FRAME_RADIUS,
-    backgroundColor: "#fff",
-    boxShadow: FRAME_SHADOW,
-  },
-  "& .MuiOutlinedInput-root": {
-    paddingRight: theme.spacing(1),
-    "& fieldset": { borderColor: FRAME_BORDER },
-    "&:hover fieldset": { borderColor: "#c9c6c3" },
-    "&.Mui-focused fieldset": { borderColor: "#347866", borderWidth: 1 },
-  },
-  "& .MuiInputBase-input": { padding: "8px 12px" },
-}));
-
-// Accordions that match the same frame
 const StyledAccordion = styled(Accordion)(() => ({
   border: `1px solid ${FRAME_BORDER}`,
   borderRadius: FRAME_RADIUS,
@@ -279,7 +262,6 @@ function AdvocatesToolbar({
           flexWrap: "wrap",
         }}
       >
-        {/* left cluster: search + radio */}
         <Box
           sx={{
             display: "flex",
@@ -311,7 +293,6 @@ function AdvocatesToolbar({
           </FormControl>
         </Box>
 
-        {/* right: filter button */}
         <Box sx={{ marginLeft: "auto" }}>
           <StyledOutlinedButton
             size="small"
@@ -495,7 +476,6 @@ function AdvocatesFilterDrawer({
           </StyledAccordion>
         </Box>
 
-        {/* sticky bottom toolbar */}
         <Box
           sx={{
             p: 1.5,
