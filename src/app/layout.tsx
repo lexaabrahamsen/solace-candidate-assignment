@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import MuiProviders from "./providers/MuiProviders";
+import { mollieGlaston, lato } from "./fonts/fonts";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -17,7 +18,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={`${lato.className} ${mollieGlaston.variable}`}>
         <MuiProviders>{children}</MuiProviders>
       </body>
     </html>

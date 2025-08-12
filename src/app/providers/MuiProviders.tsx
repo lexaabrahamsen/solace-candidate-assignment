@@ -9,11 +9,12 @@ export default function MuiProviders({ children }: { children: ReactNode }) {
     () =>
       createTheme({
         palette: {
-          primary: { main: "#347866" },        // ← your primary
-          secondary: { main: "#FF6F61" },      // ← replace with your secondary hex
+          primary: { main: "#347866" },
+          secondary: { main: "#FF6F61" },
         },
         typography: {
-          // keep body text as-is, only override display headings
+          fontFamily:
+            'var(--font-lato), -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif',
           h1: { fontFamily: '"Mollie Glaston", sans-serif' },
           h2: { fontFamily: '"Mollie Glaston", sans-serif' },
           h3: { fontFamily: '"Mollie Glaston", sans-serif' },
@@ -25,7 +26,7 @@ export default function MuiProviders({ children }: { children: ReactNode }) {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-        {children}
+      {children}
     </ThemeProvider>
   );
 }
