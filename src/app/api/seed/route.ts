@@ -1,9 +1,16 @@
-import db from "../../../db";
+import { getDb } from "../../../db";
 import { advocates } from "../../../db/schema";
 import { advocateData } from "../../../db/seed/advocates";
 
-export async function POST() {
-  const records = await db.insert(advocates).values(advocateData).returning();
+export const dynamic = "force-dynamic";
 
-  return Response.json({ advocates: records });
+export async function POST() {
+  try {
+    const db = getDb();
+    const records = await db.insert(advocates).values(advocateData).returning();
+    return Response.json({ advocates: records });
+  } catch (err: any) {
+    console.error("Seed error:", err);
+    return Response.json({ error: err?.message ?? "Server error" }, { status: 500 });
+  }
 }
