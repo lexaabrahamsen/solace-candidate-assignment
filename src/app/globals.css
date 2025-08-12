@@ -1,3 +1,10 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.wcad-hero-rich h2 {
+  font-family: var(--font-mollie-glaston), sans-serif;
+  font-size: 57px;
+  font-weight: 400;
+  line-height: 1.1;
+}
